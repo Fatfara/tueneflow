@@ -1,5 +1,7 @@
-package com.tuneflow;
+package com.tuneflow.controller;
 
+import com.tuneflow.dto.LoginRequest;
+import com.tuneflow.dto.LoginResponse;
 import com.tuneflow.dto.RegisterRequest;
 import com.tuneflow.dto.RegisterResponse;
 import com.tuneflow.service.AuthService;
@@ -28,5 +30,15 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request
+    ) {
+
+        LoginResponse response =
+                authService.login(request);
+
+        return ResponseEntity.ok(response);
     }
 }
