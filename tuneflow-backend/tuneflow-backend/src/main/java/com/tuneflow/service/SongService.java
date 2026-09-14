@@ -1,9 +1,11 @@
 package com.tuneflow.service;
 
 
+import com.tuneflow.Entity.Album;
 import com.tuneflow.Entity.Artist;
 import com.tuneflow.Entity.Genre;
 import com.tuneflow.Entity.Song;
+import com.tuneflow.Repository.AlbumRepository;
 import com.tuneflow.Repository.ArtistRepository;
 import com.tuneflow.Repository.GenreRepository;
 import com.tuneflow.Repository.SongRepository;
@@ -20,6 +22,7 @@ public class SongService {
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final GenreRepository genreRepository;
+    private final AlbumRepository albumRepository;
 
     public SongResponse createSong(SongRequest request) {
 
@@ -28,6 +31,12 @@ public class SongService {
 
         Genre genre = genreRepository.findById(request.getGenreId())
                 .orElseThrow(() -> new RuntimeException("Genre not found"));
+        Album album = null;
+
+        if (request.getAlbumId() != null) {
+            album = albumRepository.findById(request.getAlbumId())
+                    .orElseThrow(() -> new RuntimeException("Album not found"));
+        }
 
         Song song = Song.builder()
                 .title(request.getTitle())
@@ -36,6 +45,7 @@ public class SongService {
                 .duration(request.getDuration())
                 .artist(artist)
                 .genre(genre)
+                .album(album)
                 .build();
 
         Song savedSong = songRepository.save(song);
@@ -94,12 +104,20 @@ public class SongService {
         Genre genre = genreRepository.findById(request.getGenreId())
                 .orElseThrow(() -> new RuntimeException("Genre not found"));
 
+        Album album = null;
+
+        if (request.getAlbumId() != null) {
+            album = albumRepository.findById(request.getAlbumId())
+                    .orElseThrow(() -> new RuntimeException("Album not found"));
+        }
+
         song.setTitle(request.getTitle());
         song.setAudioUrl(request.getAudioUrl());
         song.setCoverImage(request.getCoverImage());
         song.setDuration(request.getDuration());
         song.setArtist(artist);
         song.setGenre(genre);
+        song.setAlbum(album);
 
         Song updatedSong = songRepository.save(song);
 
@@ -126,6 +144,8 @@ public class SongService {
                 .artistName(song.getArtist().getName())
                 .genreId(song.getGenre().getId())
                 .genreName(song.getGenre().getName())
+                .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
+                .albumTitle(song.getAlbum() != null ? song.getAlbum().getTitle() : null)
                 .createdAt(song.getCreatedAt())
                 .build();
     }

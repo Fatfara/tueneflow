@@ -5,23 +5,20 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
-public class SongRequest {
-    @NotBlank(message = "Song title is required")
+public class AlbumRequest {
+    @NotBlank(message = "Album title is required")
     private String title;
 
-    private String audioUrl;
+    private String description;
 
     private String coverImage;
 
-    @NotNull(message = "Duration is required")
-    private Integer duration;
+    private LocalDate releaseDate;
 
     @NotNull(message = "Artist ID is required")
     private Long artistId;
-
-    @NotNull(message = "Genre ID is required")
-    private Long genreId;
-    private Long albumId;
 }

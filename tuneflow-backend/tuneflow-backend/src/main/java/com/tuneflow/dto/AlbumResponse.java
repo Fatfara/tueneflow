@@ -4,26 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class SongResponse {
+public class AlbumResponse {
     private Long id;
     private String title;
-    private String audioUrl;
+    private String description;
     private String coverImage;
-    private Integer duration;
+    private LocalDate releaseDate;
 
     private Long artistId;
     private String artistName;
-
-    private Long genreId;
-    private String genreName;
-
-    private Long albumId;
-    private String albumTitle;
 
     private LocalDateTime createdAt;
 }
